@@ -1,0 +1,62 @@
+version: '3'
+
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:15
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+  redis:
+    image: redis:alpine
+    # ports:
+    #   - 6379:6379
+  # pgadmin:
+  #   image: dpage/pgadmin4:8
+  #   logging:
+  #     driver: none
+  #   environment:
+  #     - "PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}"
+  #     - "PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}"
+  #   ports:
+  #     - 5050:80
+  #   volumes:
+  #     - pgadmin_cs:/var/lib/pgadmin
+  #   depends_on:
+  #     - cs_db
+  # django_aiogram:
+  #   build: ./django_aiogram/
+  #   command: make -j2 run-prod-server
+  #   env_file: .env
+  #   volumes:
+  #     - static:/app/static
+  #     - media:/app/media
+  #   depends_on:
+  #     - cs_db
+  #     - redis
+  tg_bot:
+    build: ./tg_bot/
+    env_file:
+      - .env
+    volumes:
+      - static:/app/static
+      - media:/app/media
+    depends_on:
+      - db
+      - redis
+  gateway:
+    build: ./nginx/
+    env_file: .env
+    ports:
+      - 80:80
+    volumes:
+      - static:/static
+      - media:/media
+    depends_on:
+      - cdb
+      - tg_bot
+
