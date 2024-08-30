@@ -6,7 +6,6 @@ import handlers # noqa, get handlers for Telegram
 from core.route import root_router
 from apps.logs.route import log_router
 from config.settings import get_settings
-from .db import init_db
 
 cfg = get_settings()
 
@@ -20,7 +19,6 @@ async def _include_routers(app: FastAPI) -> None:
 async def lifespan(application: FastAPI):
     logger.info("🚀 Starting application")
     from core.bot import start_telegram
-    await init_db()
     await start_telegram()
     await _include_routers(application)
     yield
