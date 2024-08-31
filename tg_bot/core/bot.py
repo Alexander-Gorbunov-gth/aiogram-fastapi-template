@@ -9,7 +9,7 @@ from .system import first_run
 from config.settings import get_settings, Settings
 from .redis_pool import storage
 
-from apps.core.handlers.messages import core_router
+from apps.core_app.handlers.messages import core_router
 
 cfg: Settings = get_settings()
 
