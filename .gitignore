@@ -152,3 +152,6 @@ static/
 yatube_api/posts/static/
 media/
 codes/
+
+
+migrations/versions/

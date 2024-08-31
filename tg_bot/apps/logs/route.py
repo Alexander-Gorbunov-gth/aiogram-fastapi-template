@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from loguru import logger
 
 from core.bot import bot
 from . import base_model

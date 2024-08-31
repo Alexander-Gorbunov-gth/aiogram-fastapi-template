@@ -1,5 +1,5 @@
-from aiogram import Bot, Dispatcher, Router, types
-from aiogram.enums import ParseMode
+from aiogram import Bot, Dispatcher
+
 from aiogram.types import WebhookInfo, BotCommand
 from aiogram.client.default import DefaultBotProperties
 
@@ -7,14 +7,14 @@ from loguru import logger
 
 from .system import first_run
 from config.settings import get_settings, Settings
+from .redis_pool import storage
+
+from apps.core.handlers.messages import core_router
 
 cfg: Settings = get_settings()
 
-telegram_router = Router(name="telegram")
-dp = Dispatcher()
+dp = Dispatcher(storage=storage)
 
-
-dp.include_router(telegram_router)
 bot = Bot(token=cfg.bot_token, default=DefaultBotProperties(parse_mode='HTML'))
 
 
@@ -40,7 +40,7 @@ async def set_webhook(my_bot: Bot) -> None:
         )
         if cfg.debug:
             logger.debug(f"Updated bot info: {await check_webhook()}")
-        await my_bot.send_message(520449460, "Бот запущен")
+        await my_bot.send_message(cfg.admin_tg_id, "Бот запущен")
     except Exception as e:
         logger.error(f"Can't set webhook - {e}")
 
@@ -56,11 +56,15 @@ async def set_bot_commands_menu(my_bot: Bot) -> None:
         logger.error(f"Can't set commands - {e}")
 
 
+async def _include_router():
+    dp.include_router(core_router)
+
+
 async def start_telegram():
     fr = await first_run()
     if cfg.debug:
         logger.debug(f"First run: {fr}")
     if fr:
-    # if True:
         await set_webhook(bot)
         await set_bot_commands_menu(bot)
+    await _include_router()

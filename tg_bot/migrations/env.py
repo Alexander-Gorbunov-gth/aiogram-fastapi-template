@@ -1,5 +1,7 @@
+from pathlib import Path
 import asyncio
 from logging.config import fileConfig
+import importlib
 
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
@@ -10,17 +12,36 @@ from alembic import context
 
 from config.settings import get_settings
 
-from apps.users.models.tg_user import *
+# Автоматический поиск моделей для миграции в каталоге - apps
+# Все модели необходимо добавлять в приложение в папку apps/<app_name>/models/
 
+
+def import_module(path: Path):
+    for file in path.iterdir():
+        if file.is_file():
+            path = ".".join(file.parts)
+            if path.endswith(".py"):
+                path = path[:-3]
+            importlib.import_module(path)
+
+
+def found_models_in_project(path: Path):
+    if "models" in path.name:
+        import_module(path)
+        return
+    if path.is_dir():
+        for dir in path.iterdir():
+            found_models_in_project(dir)
+
+
+apps = Path("apps")
+found_models_in_project(apps)
 
 cfg = get_settings()
-# from app.models import Song ???
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
 config = context.config
 
-# Устаналвиваем URL для подключения к БД из переменной окружения 
+# Устаналвиваем URL для подключения к БД из переменной окружения
 
 config.set_main_option("sqlalchemy.url", cfg.db_url)
 

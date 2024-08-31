@@ -16,7 +16,8 @@ class Settings(BaseSettings):
     base_webhook_url: str
     db_url: str
     webhook_path: str = '/path/to/webhook'
-    telegram_my_token: str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  # Additional security token for webhook
+    telegram_my_token: str
+    admin_tg_id: int
 
 
 @lru_cache()  # get it from memory

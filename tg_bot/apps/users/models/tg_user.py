@@ -1,5 +1,4 @@
 from sqlmodel import SQLModel, Field
-from typing import Optional
 
 
 class TgUserBase(SQLModel):
@@ -10,3 +9,7 @@ class TgUserBase(SQLModel):
 
 class TgUser(TgUserBase, table=True):
     pass
+
+
+class TgUser2(SQLModel, table=True):
+    id: int | None = Field(primary_key=True)
