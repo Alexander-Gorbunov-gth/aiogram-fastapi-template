@@ -1,5 +1,24 @@
 # Шаблон сервера для Телеграм бота. 
 
+## Админка
+
+### Доступ к админке
+```/admin```
+
+### Для регистрации модели (table=True) испольщуем @admin_site.reg из core.admin
+```
+    # apps/<название вашего модуля>/admin.py
+    from sqladmin import ModelView
+
+    from .models.user import FastApiUser
+    from core.admin import admin_site
+
+
+    @admin_site.reg
+    class UserAdmin(ModelView, model=FastApiUser):
+        column_list = [FastApiUser.id, FastApiUser.name]
+
+```
 
 ## Alembic 
 

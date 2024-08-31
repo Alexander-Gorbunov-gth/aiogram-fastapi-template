@@ -1,8 +1,6 @@
 from sqlmodel import SQLModel, Field
 
 
-
-
 class FastApiUserBase(SQLModel):
     name: str
 
