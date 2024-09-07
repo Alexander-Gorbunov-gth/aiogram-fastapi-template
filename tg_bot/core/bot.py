@@ -6,12 +6,12 @@ from aiogram.client.default import DefaultBotProperties
 from loguru import logger
 
 from .system import first_run
-from config.settings import get_settings, Settings
+from config.settings import get_settings
 from .redis_pool import storage
 
 from apps.core_app.handlers.messages import core_router
 
-cfg: Settings = get_settings()
+cfg = get_settings()
 
 dp = Dispatcher(storage=storage)
 
@@ -40,7 +40,7 @@ async def set_webhook(my_bot: Bot) -> None:
         )
         if cfg.debug:
             logger.debug(f"Updated bot info: {await check_webhook()}")
-        await my_bot.send_message(cfg.admin_tg_id, "Бот запущен")
+        # await my_bot.send_message(cfg.admin_tg_id, "Бот запущен")
     except Exception as e:
         logger.error(f"Can't set webhook - {e}")
 
@@ -65,6 +65,7 @@ async def start_telegram():
     if cfg.debug:
         logger.debug(f"First run: {fr}")
     if fr:
+    # if True:
         await set_webhook(bot)
         await set_bot_commands_menu(bot)
     await _include_router()

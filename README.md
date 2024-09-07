@@ -28,14 +28,24 @@
         column_list = [FastApiUser.id, FastApiUser.name]
 
 ```
+### [Докусентация для админки](https://aminalaee.dev/sqladmin/configurations/)
 
 ## Alembic 
 
 ### 1. Создать миграции 
- ```alembic revision --autogenerate -m "init"```
+ ```
+ alembic revision --autogenerate -m "init"
+ ```
 
 ### 2. Применить миграции
-  ```alembic upgrade head```
+  ```
+  alembic upgrade head
+  ```
 
 __Примечание__
 > Для Alembic при создании миграций будут автоматически импортированы файлы с моделями SQLModel из папок apps/<название вашего модуля>/models/
+
+
+Генерация Secret key
+
+openssl rand -hex 32
