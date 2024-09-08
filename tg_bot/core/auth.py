@@ -122,7 +122,6 @@ async def get_current_active_user(
 async def get_superuser(
     current_user: Annotated[users.User, Depends(get_current_active_user)],
 ):
-    print(current_user)
-    # if not current_user.is_superuser:
-    #     raise HTTPException(status_code=400, detail="Not Superuser")
+    if not current_user.is_superuser:
+        raise HTTPException(status_code=400, detail="Not Superuser")
     return current_user
