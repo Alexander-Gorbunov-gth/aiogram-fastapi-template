@@ -1,8 +1,6 @@
-import os
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from loguru import logger
-from sqladmin import Admin
 
 from core.route import root_router
 from apps.users.route import auth_router

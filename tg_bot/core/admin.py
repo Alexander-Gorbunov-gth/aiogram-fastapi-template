@@ -12,7 +12,7 @@ from core.auth import get_user_token, get_user, get_current_user
 
 
 class AdminSite:
-    
+
     def __init__(self) -> None:
         self.admin_views: list = []
 

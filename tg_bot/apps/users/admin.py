@@ -31,7 +31,7 @@ class UserAdmin(ModelView, model=User):
     column_formatters_detail = {
         User.password: lambda m, a: m.password[:10]
     }
-    
+
     async def on_model_change(
             self,
             data: dict,
@@ -40,13 +40,18 @@ class UserAdmin(ModelView, model=User):
             request: Request
     ) -> Coroutine[Any, Any, None]:
         # Если создаем - просто меняем пароль на хэш пароль
-        if is_created:  
+        if is_created:
             user_password = data["password"]
             password_hash = get_password_hash(user_password)
             data["password"] = password_hash
-            return await super().on_model_change(data, model, is_created, request)
+            return await super().on_model_change(
+                data,
+                model,
+                is_created,
+                request
+            )
         # При редактировании проверяем редактровался ли пароль
-        # Если да - сохраняем хэш 
+        # Если да - сохраняем хэш
         old_password_hash = model.password
         new_password = data["password"]
         if old_password_hash != new_password:
