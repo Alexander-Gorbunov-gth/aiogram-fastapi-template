@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         ),  # first search .dev.env, then .prod.env
         env_file_encoding='utf-8',
     )
-    debug: bool = True
+    debug: bool
     redis_url: str = "redis://localhost:6379"
     test: str = "test"
     bot_token: str

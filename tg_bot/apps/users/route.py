@@ -9,6 +9,9 @@ from core.auth import (get_user_token,
                        get_current_active_user,
                        create_superuser_key
                        )
+from config.settings import get_settings
+
+cfg = get_settings()
 
 
 auth_router = APIRouter(
@@ -34,9 +37,11 @@ async def login_for_access_token_with_api(
     return token
 
 
-@auth_router.post("/create-superuser/")
+@auth_router.post(
+        "/create-superuser/",
+        include_in_schema=cfg.debug)
 async def create_superuser(
-    superuser: Annotated[bool, Depends(create_superuser_key)],
+    superuser: Annotated[users.User, Depends(create_superuser_key)],
 ):
     return superuser
 

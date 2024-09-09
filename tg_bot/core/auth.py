@@ -40,7 +40,7 @@ async def create_superuser_key(
         data: users.UserLogin,
         session: Annotated[AsyncSession, Depends(get_session)]
         ):
-    if key != cfg.superuser_key:
+    if not cfg.debug or key != cfg.superuser_key:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect superuser_key"
