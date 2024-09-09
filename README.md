@@ -28,7 +28,7 @@
         column_list = [FastApiUser.id, FastApiUser.name]
 
 ```
-### [Докусентация для админки](https://aminalaee.dev/sqladmin/configurations/)
+### [Документация для админки](https://aminalaee.dev/sqladmin/configurations/)
 
 ### При запуске docker-compose.yml - копируем статику для админки
 ```
@@ -59,7 +59,7 @@ __Примечание__
   debug = True
   superuser_key = <your_secret_key>
   ```
-### 2. В схемк OpenApi используйте метод /create-superuser/
+### 2. В схеме OpenApi используйте метод /create-superuser/
 
 Генерация Secret key
 
