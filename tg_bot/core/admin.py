@@ -9,6 +9,9 @@ from core.db import engine
 from .system import ImportModule
 from apps.users.models import users
 from core.auth import get_user_token, get_user, get_current_user
+from config.settings import get_settings
+
+cfg = get_settings()
 
 
 class AdminSite:
@@ -70,8 +73,13 @@ async def init_admin(app):
     """
     Добавлени все view с декоратором @reg для админки
     """
-    authentication_backend = AdminAuth(secret_key="123")
-    admin = Admin(app, engine, authentication_backend=authentication_backend)
+    authentication_backend = AdminAuth(secret_key=cfg.secret_key_jwt)
+    admin = Admin(
+        app,
+        engine,
+        authentication_backend=authentication_backend,
+        # base_url="/admin/",
+    )
     apps = Path("apps")
     ImportModule.found_models_in_project(apps, "admin")
     for view in admin_site.admin_views:

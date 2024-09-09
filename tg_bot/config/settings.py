@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     logger.info("test")
     model_config = SettingsConfigDict(
         env_file=(
-            # '.dev.env',
+            '.dev.env',
             '.env'
         ),  # first search .dev.env, then .prod.env
         env_file_encoding='utf-8',

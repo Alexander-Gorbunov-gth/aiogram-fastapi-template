@@ -21,7 +21,7 @@ auth_router = APIRouter(
 )
 
 
-@auth_router.post("/token")
+@auth_router.post("/api/token")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> users.Token:
@@ -51,10 +51,3 @@ async def read_users_me(
     current_user: Annotated[users.User, Depends(get_current_active_user)],
 ):
     return current_user
-
-
-# @app.get("/users/me/items/")
-# async def read_own_items(
-#     current_user: Annotated[User, Depends(get_current_active_user)],
-# ):
-#     return [{"item_id": "Foo", "owner": current_user.username}]

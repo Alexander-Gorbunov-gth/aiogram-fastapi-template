@@ -30,6 +30,13 @@
 ```
 ### [Докусентация для админки](https://aminalaee.dev/sqladmin/configurations/)
 
+### При запуске docker-compose.yml - копируем статику для админки
+```
+  sudo docker compose -f docker-compose.yml exec tg_bot mkdir /app/static/admin/
+
+  sudo docker compose -f docker-compose.yml exec tg_bot cp -r /app/tmp_file/admin_statics/. /app/static/admin/statics/ 
+```
+
 ## Alembic 
 
 ### 1. Создать миграции 
@@ -57,3 +64,5 @@ __Примечание__
 Генерация Secret key
 
 openssl rand -hex 32
+
+

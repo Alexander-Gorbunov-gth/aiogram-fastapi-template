@@ -8,7 +8,7 @@ cfg = get_settings()
 
 pool = ConnectionPool.from_url(cfg.redis_url)
 
-redis = Redis(host=cfg.redis_url)
+redis = Redis.from_pool(pool)
 storage = RedisStorage(
     redis=redis,
     key_builder=DefaultKeyBuilder(with_destiny=True)

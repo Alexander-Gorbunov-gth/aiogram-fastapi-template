@@ -1,8 +1,8 @@
 from loguru import logger
-from typing import Annotated, Tuple
+from typing import Annotated
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
-from aiogram.utils.markdown import hbold
+# from aiogram.utils.markdown import hbold
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from sqlmodel.ext.asyncio.session import AsyncSession
