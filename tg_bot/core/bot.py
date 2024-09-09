@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.types import WebhookInfo, BotCommand
 from aiogram.client.default import DefaultBotProperties
 from aiogram3_di import setup_di
+from aiogram_dialog import setup_dialogs
 
 from loguru import logger
 
@@ -61,6 +62,7 @@ async def set_bot_commands_menu(my_bot: Bot) -> None:
 async def _include_router():
     dp.include_router(core_router)
     setup_di(dp)  # Добавляет зависимости в aiogram
+    setup_dialogs(dp)
 
 
 async def start_telegram():

@@ -1,3 +1,5 @@
+from typing import Tuple
+
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import SQLModel
 from sqlalchemy.exc import NoResultFound
@@ -10,7 +12,7 @@ async def update_or_create(
         model: SQLModel,
         data: dict,
         search: str
-):
+) -> Tuple[SQLModel, bool]:
     try:
         obj = await session.exec(
             select(model).where(getattr(model, search) == data[search])
