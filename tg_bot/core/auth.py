@@ -12,7 +12,7 @@ from passlib.context import CryptContext
 
 from config.settings import get_settings
 from apps.users.models import users
-from core.db import engine
+from core.db import engine, get_session
 
 cfg = get_settings()
 
@@ -33,6 +33,27 @@ def verify_password(plain_password, hashed_password):
 
 def get_password_hash(password):
     return pwd_context.hash(password)
+
+
+async def create_superuser_key(
+        key: str,
+        data: users.UserLogin,
+        session: Annotated[AsyncSession, Depends(get_session)]
+        ):
+    if key != cfg.superuser_key:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect superuser_key"
+        )
+    superuser = users.User(
+        is_superuser=True,
+        username=data.username,
+        password=get_password_hash(data.password)
+    )
+    session.add(superuser)
+    await session.commit()
+    await session.refresh(superuser)
+    return superuser
 
 
 async def get_user(username: str):

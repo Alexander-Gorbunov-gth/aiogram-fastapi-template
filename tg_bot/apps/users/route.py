@@ -5,9 +5,17 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter
 
 from apps.users.models import users
-from core.auth import get_user_token, get_current_active_user
+from core.auth import (get_user_token,
+                       get_current_active_user,
+                       create_superuser_key
+                       )
 
-auth_router = APIRouter()
+
+auth_router = APIRouter(
+    prefix="",
+    tags=["auth"],
+    responses={404: {"description": "Not found"}},
+)
 
 
 @auth_router.post("/token")
@@ -24,6 +32,13 @@ async def login_for_access_token_with_api(
 ):
     token = await get_user_token(data.username, data.password)
     return token
+
+
+@auth_router.post("/create-superuser/")
+async def create_superuser(
+    superuser: Annotated[bool, Depends(create_superuser_key)],
+):
+    return superuser
 
 
 @auth_router.get("/users/me/", response_model=users.UserPublic)

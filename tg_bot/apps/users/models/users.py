@@ -12,6 +12,9 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     password: str
 
+    def __str__(self) -> str:
+        return f"User - {self.username}"
+
 
 class UserInDB(UserBase):
     hashed_password: str
@@ -33,4 +36,3 @@ class Token(SQLModel):
 
 class TokenData(SQLModel):
     username: str | None = None
-

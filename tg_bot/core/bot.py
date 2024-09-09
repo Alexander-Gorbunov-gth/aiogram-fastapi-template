@@ -2,6 +2,7 @@ from aiogram import Bot, Dispatcher
 
 from aiogram.types import WebhookInfo, BotCommand
 from aiogram.client.default import DefaultBotProperties
+from aiogram3_di import setup_di
 
 from loguru import logger
 
@@ -14,6 +15,7 @@ from apps.core_app.handlers.messages import core_router
 cfg = get_settings()
 
 dp = Dispatcher(storage=storage)
+
 
 bot = Bot(token=cfg.bot_token, default=DefaultBotProperties(parse_mode='HTML'))
 
@@ -58,14 +60,15 @@ async def set_bot_commands_menu(my_bot: Bot) -> None:
 
 async def _include_router():
     dp.include_router(core_router)
+    setup_di(dp)  # Добавляет зависимости в aiogram
 
 
 async def start_telegram():
     fr = await first_run()
     if cfg.debug:
         logger.debug(f"First run: {fr}")
-    if fr:
-    # if True:
+    # if fr:
+    if True:
         await set_webhook(bot)
         await set_bot_commands_menu(bot)
     await _include_router()

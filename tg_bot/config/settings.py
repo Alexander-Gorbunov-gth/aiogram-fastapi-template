@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     admin_tg_id: int
     secret_key_jwt: str
     algorythm_jwt: str
+    superuser_key: str
 
 
 @lru_cache()  # get it from memory

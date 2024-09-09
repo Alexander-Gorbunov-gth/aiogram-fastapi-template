@@ -6,12 +6,12 @@ from aiogram.filters import CommandStart, Command
 from aiogram.utils.markdown import hbold
 from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
-from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from aiogram3_di import Depends
 
-from core.db import get_session, engine
-from apps.users.models.users import User
+from core.db import get_session
+from apps.users.models.tg_user import TgUser
+from utils.db import update_or_create
 
 core_router = Router(name="telegram")
 
@@ -26,11 +26,17 @@ async def cmd_start(
     message: Message,
     session: Annotated[AsyncSession, Depends(get_session)]
 ) -> None:
-    r = await session.exec(
-        select(User)
+    data = {
+        "tg_id": message.from_user.id,
+        "tg_username": message.from_user.username,
+        "name": message.from_user.full_name
+    }
+    user, is_create = await update_or_create(
+        session,
+        TgUser,
+        data,
+        "tg_id"
     )
-    for t in r:
-        print(t)
     await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
 
 
